@@ -62,6 +62,7 @@ export async function onRequestPost({ request, env }) {
       remoteip: request.headers.get('CF-Connecting-IP'), 
     }),
   });
+  
 
   const verificationData = await verificationResponse.json();
 
