@@ -1,6 +1,6 @@
 // /functions/api/submit.js
 
-export async function onRequestPost({ request }) {
+export async function onRequestPost({ request, env }) {
   // 1. Get Form and reCAPTCHA Data
   const formData = await request.formData();
   const recaptchaToken = formData.get('g-recaptcha-response');
