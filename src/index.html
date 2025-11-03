@@ -330,11 +330,7 @@
                       <div class="cf-turnstile" data-sitekey="0x4AAAAAAB-bLETI399Ch7Q8"></div> 
                     </fieldset>
                   </div>
-                  <br>
-                  <br>
-                  <div class="col-lg-12">
-                      <div id="form-message-area"></div>
-                  </div>  
+                    
                 </div>
               </form>
             </div>
@@ -397,38 +393,7 @@
         }
     }
 
-    // Add this to your main script (e.g., assets/js/custom.js)
-document.getElementById('contact').addEventListener('submit', async function (event) {
-    event.preventDefault(); // <<-- Prevents the redirect/page reload
-
-    const form = event.target;
-    const messageArea = document.getElementById('form-message-area');
     
-    // 1. Show Loading State
-    messageArea.innerHTML = 'Sending...'; 
-
-    try {
-        // 2. Submit data to Cloudflare Function silently
-        const response = await fetch(form.action, {
-            method: 'POST',
-            body: new FormData(form),
-        });
-
-        const text = await response.text();
-
-        if (response.ok) {
-            // 3. Show Success & Clear Form
-            messageArea.innerHTML = '<p style="color: green; font-weight: bold;">✅ Success! We will contact you shortly.</p>';
-            form.reset();
-        } else {
-            // 4. Show Specific Error
-            messageArea.innerHTML = `<p style="color: red; font-weight: bold;">❌ Submission Failed: ${text}</p>`;
-        }
-    } catch (error) {
-        // 5. Handle Network Issues
-        messageArea.innerHTML = '<p style="color: red;">⚠️ Network Error: Please check your connection.</p>';
-    }
-});
   
   </script>
 
