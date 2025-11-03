@@ -37,7 +37,7 @@ export async function onRequestPost({ request, env }) {
 
 
   // --- FORWARD DATA TO GOOGLE SHEET ---
-  const sheetResponse = await fetch(env.SCRIPT_URL, {
+  const sheetResponse = await fetch(env.EMAIL_SCRIPT_URL, {
     method: 'POST',
     body: formData,
   });
