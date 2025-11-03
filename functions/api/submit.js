@@ -1,48 +1,3 @@
-// export async function onRequestPost({ request, env }) {
-//   const formData = await request.formData();
-//   const recaptchaToken = formData.get('g-recaptcha-response');
-//   const recaptchaVerifyUrl = `https://www.google.com/recaptcha/api/siteverify?secret=${env.RECAPTCHA_SECRET}&response=${recaptchaToken}`;
-  
-//   // Set your acceptable threshold for v3 (0.0 to 1.0)
-//   const MIN_SCORE = 0.5; 
-
-//   try {
-//     // 1. Verify reCAPTCHA token with Google
-//     const recaptchaResponse = await fetch(recaptchaVerifyUrl, { method: 'POST' });
-//     const recaptchaData = await recaptchaResponse.json();
-
-//     // 💡 CRITICAL DEBUG STEP: Log the Google response to Cloudflare logs
-//     console.log('reCAPTCHA Data:', JSON.stringify(recaptchaData));
-
-//     // 2. Check for overall success AND score threshold
-//     if (!recaptchaData.success || recaptchaData.score < MIN_SCORE) {
-//       console.error('Recaptcha failed check. Score:', recaptchaData.score, 'Errors:', recaptchaData['error-codes']);
-//       return new Response(
-//           `reCAPTCHA verification failed. Score: ${recaptchaData.score}`, 
-//           { status: 403 }
-//       );
-//     }
-    
-//     // 3. FORWARD DATA TO GOOGLE SHEET
-//     const sheetResponse = await fetch(env.SCRIPT_URL, {
-//       method: 'POST',
-//       body: formData,
-//     });
-
-//     if (sheetResponse.ok) {
-//       return new Response('Callback requested successfully!', { status: 200 });
-//     } else {
-//       // Log the non-200 response details from Google Apps Script
-//       console.error('Google Sheet Apps Script failed with status:', sheetResponse.status);
-//       return new Response('Form submission failed on the backend.', { status: 500 });
-//     }
-
-//   } catch (error) {
-//     console.error('Uncaught error during form processing:', error.message);
-//     return new Response('An internal error occurred.', { status: 500 });
-//   }
-// }
-
 export async function onRequestPost({ request, env }) {
   const formData = await request.formData();
   
@@ -88,9 +43,25 @@ export async function onRequestPost({ request, env }) {
   });
 
   if (sheetResponse.ok) {
-    return new Response(`<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Request Received</title><style>body{font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;text-align:center;padding:50px;background-color:#F0FFF0;color:#333}.container{max-width:600px;margin:auto;padding:30px;border-radius:10px;box-shadow:0 4px 12px rgba(0,0,0,0.1);background-color:white}.back-button{padding:12px 25px;background-color:#4CAF50;color:white;border:none;border-radius:6px;cursor:pointer;margin-top:25px;font-weight:bold;transition:background-color 0.3s}.back-button:hover{background-color:#388E3C}h1{color:#4CAF50}</style></head><body><div class="container"><h1>✅ Request Received!</h1><p style="font-size:1.1em;">Form has been submitted successfully. We will contact you shortly.</p><button class="back-button" onclick="window.history.back()">Go Back</button><p style="margin-top:25px;color:#777;font-size:0.9em;">Returning to the previous page in 5 seconds...</p></div><script>setTimeout(() => {window.history.back();}, 5000);</script></body></html>`, { status: 200 });
+    // return new Response(`<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Request Received</title><style>body{font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;text-align:center;padding:50px;background-color:#F0FFF0;color:#333}.container{max-width:600px;margin:auto;padding:30px;border-radius:10px;box-shadow:0 4px 12px rgba(0,0,0,0.1);background-color:white}.back-button{padding:12px 25px;background-color:#4CAF50;color:white;border:none;border-radius:6px;cursor:pointer;margin-top:25px;font-weight:bold;transition:background-color 0.3s}.back-button:hover{background-color:#388E3C}h1{color:#4CAF50}</style></head><body><div class="container"><h1>✅ Request Received!</h1><p style="font-size:1.1em;">Form has been submitted successfully. We will contact you shortly.</p><button class="back-button" onclick="window.history.back()">Go Back</button><p style="margin-top:25px;color:#777;font-size:0.9em;">Returning to the previous page in 5 seconds...</p></div><script>setTimeout(() => {window.history.back();}, 5000);</script></body></html>`, { status: 200 });
+    return new Response(`<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Request Received</title><style>body{font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;text-align:center;padding:50px;background-color:#F0FFF0;color:#333}.container{max-width:600px;margin:auto;padding:30px;border-radius:10px;box-shadow:0 4px 12px rgba(0,0,0,0.1);background-color:white}.back-button{padding:12px 25px;background-color:#4CAF50;color:white;border:none;border-radius:6px;cursor:pointer;margin-top:25px;font-weight:bold;transition:background-color 0.3s}.back-button:hover{background-color:#388E3C}h1{color:#4CAF50}</style></head><body><div class="container"><h1>✅ Request Received!</h1><p style="font-size:1.1em;">Form has been submitted successfully. We will contact you shortly.</p><button class="back-button" onclick="window.history.back()">Go Back</button><p style="margin-top:25px;color:#777;font-size:0.9em;">Returning to the previous page in 5 seconds...</p></div><script>setTimeout(() => {window.history.back();}, 5000);</script></body></html>`, { 
+        status: 200, 
+        headers: { 
+            // ADD THIS LINE
+            'Content-Type': 'text/html' 
+        } 
+    }); 
   } else {
     // Return the actual HTTP status if the Google Sheet call fails
-    return new Response(`Form submission failed on the backend. Sheet Status: ${sheetResponse.status}`, { status: 500 });
+    // return new Response(`Form submission failed on the backend. Sheet Status: ${sheetResponse.status}`, { status: 500 });
+    const failureHtml = `<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Submission Failed</title><style>body{font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;text-align:center;padding:50px;background-color:#FFF5F5;color:#333}.container{max-width:600px;margin:auto;padding:30px;border-radius:10px;box-shadow:0 4px 12px rgba(0,0,0,0.1);background-color:white}.back-button-fail{padding:12px 25px;background-color:#DC3545;color:white;border:none;border-radius:6px;cursor:pointer;margin-top:25px;font-weight:bold;transition:background-color 0.3s}.back-button-fail:hover{background-color:#C82333}h1{color:#DC3545}</style></head><body><div class="container"><h1>❌ Submission Error</h1><p style="font-size:1.1em;">The backend failed to process your request (Status: ${sheetResponse.status}). Please try submitting the form again.</p><button class="back-button-fail" onclick="window.history.back()">Try Again</button><p style="margin-top:25px;color:#777;font-size:0.9em;">Returning to the previous page in 5 seconds...</p></div><script>setTimeout(() => {window.history.back();}, 5000);</script></body></html>`;
+    
+    // Return the HTML error page with the correct status and header
+    return new Response(failureHtml, { 
+        status: 500,
+        headers: { 
+            'Content-Type': 'text/html' 
+        } 
+    });
   }
 }
